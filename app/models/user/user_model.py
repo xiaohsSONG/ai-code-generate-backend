@@ -16,7 +16,7 @@ class UserModel(db.Model):
     editTime = db.Column(db.DateTime, comment='编辑时间')
     isDelete = db.Column(db.SmallInteger, default=0, nullable=False, comment='是否删除')
 
-    def __init__(self, userAccount, userName, userPassword, userProfile=None, userRole='user', userAvatar=None):
+    def __init__(self, userAccount,  userPassword,userName='无名', userProfile=None, userRole='user', userAvatar=None):
         self.userAccount = userAccount
         self.userName = userName
         self.userPassword = userPassword
@@ -24,6 +24,7 @@ class UserModel(db.Model):
         self.userRole = userRole
         self.userAvatar = userAvatar
         self.createTime = datetime.now()
+        self.editTime = datetime.now()
         self.updateTime = datetime.now()
         self.isDelete = 0   
     

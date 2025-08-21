@@ -1,8 +1,7 @@
-from typing import Generic, TypeVar
 from app.common.enum.error_code import ErrorCode
 
 
-class BaseResponse():
+class BaseResponse:
     """基础响应类，统一 API 响应格式"""
 
     def __init__(self, code: int, data, message: str = ""):
