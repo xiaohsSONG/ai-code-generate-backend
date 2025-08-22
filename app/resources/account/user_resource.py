@@ -50,3 +50,40 @@ class RegisterResource(CommonResource):
         finally:
             db.session.close()
         return ResultUtils.success(ret)
+    
+class LoginResource(CommonResource):
+
+    def post(self):
+        args = self.get_parser_args([
+            dict(key='userAccount', required=True, type=str, help='userAccount'),
+            dict(key='userPassword', required=True, type=str, help='userPassword'),
+        ])
+
+        throw_if_error_code(args is None, ErrorCode.PARAMS_ERROR)
+        user_account = args['userAccount']
+        user_password = args['userPassword']
+        
+        #1、参数校验
+        if not all([user_account, user_password]):
+            raise BusinessException.from_error_code(ErrorCode.PARAMS_ERROR,"参数为空")
+        if len(user_account) < 4:
+            raise  BusinessException.from_error_code(ErrorCode.PARAMS_ERROR,"账号错误")
+        if len(user_password) < 8:
+            raise BusinessException.from_error_code(ErrorCode.PARAMS_ERROR, "密码错误")
+        
+        # 2.加密
+        hashed_password = CommonUtils.get_encrypt_password(user_password)
+        print("Login_Hashed_Password", hashed_password)
+        #3、查询用户
+        user = UserModel.query.filter_by(userAccount=user_account, userPassword=hashed_password).first()
+
+        if not user:
+            raise BusinessException.from_error_code(ErrorCode.PARAMS_ERROR, "账号或密码错误")
+        
+        #4、记录用户的登录态
+        # self.set_session("user", user.to_dict())
+
+        #5、用户脱敏
+        safe_user = CommonUtils.get_safe_user(user)
+
+        return ResultUtils.success(safe_user)
