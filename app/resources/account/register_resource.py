@@ -47,4 +47,6 @@ class RegisterResource(CommonResource):
         except Exception as e:
             db.session.rollback()  # 出错时回滚
             raise BusinessException.from_error_code(ErrorCode.SYSTEM_ERROR, "注册失败：" + str(e))
+        finally:
+            db.session.close()
         return ResultUtils.success(ret)

@@ -8,7 +8,7 @@ def throw_if(condition: bool, exception: Exception) -> None:
 
 def throw_if_error_code(condition: bool,error_code: ErrorCode) -> None:
     if condition:
-        raise BusinessException.from_error_code(error_code)
+        raise BusinessException.from_error_code(error_code,'')
 
 def throw_if_error_message(condition: bool, error_code: ErrorCode, message: str) -> None:
     """如果条件为真，则抛出错误码对应的业务异常"""

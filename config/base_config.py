@@ -10,13 +10,15 @@ class BaseConfig:
     MYSQL_HOST = os.environ.get('MYSQL_HOST') or 'localhost'
     MYSQL_PORT = int(os.environ.get('MYSQL_PORT') or 3306)
     MYSQL_USER = os.environ.get('MYSQL_USER') or 'root'
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD') or 'abc123'
+    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD') or '1q2w3e4r'
     MYSQL_DATABASE = os.environ.get('MYSQL_DATABASE') or 'ai_code_generate'
     MYSQL_CHARSET = os.environ.get('MYSQL_CHARSET') or 'utf8mb4'
 
     #SQLAlchemy配置
     SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}?charset={MYSQL_CHARSET}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_MAX_OVERFLOW = 20  # 最大溢出连接数
+    SQLALCHEMY_POOL_TIMEOUT = 30  # 连接超时时间
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_size': 10,
         'pool_recycle': 3600,
